@@ -9,25 +9,24 @@ url_map = {
 
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        if self.path == '/shorten':
-            content_length = int(self.headers['Content-Length'])
-            post_data = self.rfile.read(content_length).decode('utf-8')
-            parsed_data = parse_qs(post_data)
-            requested_path = parsed_data.get('url', [''])[0]
-            if requested_path in url_map:
-                self.send_response(301)
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
-                with open('about.html', 'rb') as f:
-                    self.wfile.write(f.read())
-                return
-            else:
-                # If path isn't in our map, go back home or show error
-                self.send_response(303)
-                self.send_header('Content-type', 'text/html')         
-                self.send_header('Location', '/')
-                self.end_headers()
-                self.wfile.write(b"Redirecting to home page...") 
+        if self.path != '/shorten':
+            self.send_error(404)
+            return
+
+        content_length = int(self.headers.get('Content-Length', 0))
+        post_data = self.rfile.read(content_length).decode()
+        parsed_data = parse_qs(post_data)
+
+        requested_path = parsed_data.get('url', [''])[0]
+
+        if requested_path in url_map:
+            self.send_response(303)  # POST → GET redirect
+            self.send_header('Content-type', 'text/html')
+            self.send_header('Location', requested_path)
+            self.end_headers()
+        else:
+            self.send_error(404, "URL not found")
+
 
     def do_GET(self):
         if self.path == '/':
@@ -37,6 +36,17 @@ class Handler(BaseHTTPRequestHandler):
             with open('index.html', 'rb') as f:
                 self.wfile.write(f.read())
             return
+        
+        if self.path in url_map:
+            file = url_map[self.path]
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html')
+            self.end_headers()
+            with open(file, 'rb') as f:
+                self.wfile.write(f.read())
+            return
+        
+        self.send_error(404)
         
 server = HTTPServer(('localhost', 8080), Handler)
 server.serve_forever()
