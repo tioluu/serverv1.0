@@ -23,10 +23,11 @@ class Handler(BaseHTTPRequestHandler):
                 return
             else:
                 # If path isn't in our map, go back home or show error
-                self.send_response(303) # "See Other"
+                self.send_response(303)
+                self.send_header('Content-type', 'text/html')         
                 self.send_header('Location', '/')
                 self.end_headers()
-                self.send_response(200)
+                self.wfile.write(b"Redirecting to home page...") 
 
     def do_GET(self):
         if self.path == '/':
