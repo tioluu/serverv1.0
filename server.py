@@ -37,21 +37,5 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(f.read())
             return
         
-        if self.path in url_map:
-            self.send_response(301)
-            self.send_header('Location', url_map[self.path])
-            self.end_headers()
-            return
-        #fallback response
-        self.send_response(404)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-        self.wfile.write(b"404 Not Found")
-
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-        self.wfile.write(b"Hello, Http!")
-
 server = HTTPServer(('localhost', 8080), Handler)
 server.serve_forever()
