@@ -32,7 +32,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-            with open('index.html', 'rb') as f:
+            with open('src/index.html', 'rb') as f:
                 self.wfile.write(f.read())
             return
         
@@ -41,7 +41,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
             self.end_headers()
-            with open(file, 'rb') as f:
+            with open(f'src/{file}', 'rb') as f:
                 self.wfile.write(f.read())
             return
         
