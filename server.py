@@ -2,8 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
 
 url_map = {
-    '/thelife': 'thelifeisrealgood.html',
-    '/sonio': 'about.html',
+    '/about': 'about.html',
     '/contact': 'contact.html',
 }
 
