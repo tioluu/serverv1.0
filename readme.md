@@ -17,6 +17,6 @@ Then open:
 
 ## Files
 - `server.py` — HTTP server and routing logic
-- `index.html` — landing page + form
-- `about.html` — about page
-- `contact.html` — contact page
+- `src/index.html` — landing page + form
+- `src/about.html` — about page
+- `src/contact.html` — contact page
