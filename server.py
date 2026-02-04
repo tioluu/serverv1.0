@@ -13,14 +13,13 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         content_length = int(self.headers.get('Content-Length', 0))
-        post_data = self.rfile.read(content_length).decode()
+        post_data = self.rfile.read(content_length).decode('utf-8')
         parsed_data = parse_qs(post_data)
 
         requested_path = parsed_data.get('url', [''])[0]
 
         if requested_path in url_map:
             self.send_response(303)  # POST → GET redirect
-            self.send_header('Content-type', 'text/html')
             self.send_header('Location', requested_path)
             self.end_headers()
         else:
@@ -30,7 +29,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/':
             self.send_response(200)
-            self.send_header('Content-type', 'text/html')
+            self.send_header('Content-type', 'text/html; charset=utf-8')
             self.end_headers()
             with open('src/index.html', 'rb') as f:
                 self.wfile.write(f.read())
@@ -39,7 +38,7 @@ class Handler(BaseHTTPRequestHandler):
         if self.path in url_map:
             file = url_map[self.path]
             self.send_response(200)
-            self.send_header('Content-Type', 'text/html')
+            self.send_header('Content-Type', 'text/html; charset=utf-8')
             self.end_headers()
             with open(f'src/{file}', 'rb') as f:
                 self.wfile.write(f.read())
