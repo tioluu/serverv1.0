@@ -1,13 +1,16 @@
 <html>
 <head>
     <title>URL Shortener</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to URL Shortener</h1>
-    <form action="/shorten" method="post">
-        <label for="url">Paste a link to shorten:</label>
-        <input type="text" id="url" name="url" required>
-        <input type="submit" value="Create Short Link">
-    </form>
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <form action="/shorten" method="post">
+            <label for="url">Paste a link to shorten:</label>
+            <input type="text" id="url" name="url" placeholder="https://example.com/very/long/url" required>
+            <input type="submit" value="Create Short Link">
+        </form>
+    </div>
 </body>
 </html>
