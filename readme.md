@@ -27,4 +27,3 @@ SPOO_API_KEY=your_key_here
 - `src/index.html` — landing page + form
 - `src/style.css` — page styles
 - `src/script.js` — client-side form handling and rendering
-- `run.sh` — convenience script to run the server
