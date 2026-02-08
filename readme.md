@@ -8,7 +8,7 @@ A tiny URL shortener demo built with Python’s built-in HTTP server and a small
 - Displays the short link on the page via JavaScript
 
 ## Environment
-This project requires an API key from Spoo.me. Create a `.env` file and set your key (do not commit this file):
+This project requires an API key from Spoo.me. Create a `.env` file and set your key
 ```bash
 SPOO_API_KEY=your_key_here
 ```
@@ -21,7 +21,6 @@ python3 server.py
 
 Then open:
 - `http://localhost:8080/`
-
 
 
 ## Files
