@@ -8,10 +8,17 @@ import requests
 
 
 class Handler(BaseHTTPRequestHandler):
+    def _set_security_headers(self):
+        self.send_header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https://api.shrtco.de;")
+        self.send_header('X-Content-Type-Options', 'nosniff')
+        self.send_header('X-Frame-Options', 'DENY')
+        self.send_header('X-XSS-Protection', '1; mode=block')
+        
     def _send_json(self, status_code, payload):
         body = payload.encode('utf-8') if isinstance(payload, str) else payload
         self.send_response(status_code)
         self.send_header('Content-type', 'application/json; charset=utf-8')
+        self._set_security_headers()
         self.end_headers()
         self.wfile.write(body)
 
@@ -19,6 +26,9 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == '/':
             self.send_response(200)
             self.send_header('Content-type', 'text/html; charset=utf-8')
+            content_length = os.path.getsize('src/index.html')
+            self.send_header('Content-Length', str(content_length))
+            self._set_security_headers()
             self.end_headers()
             with open('src/index.html', 'rb') as f:
                 self.wfile.write(f.read())
@@ -27,6 +37,7 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == '/style.css':
             self.send_response(200)
             self.send_header('Content-type', 'text/css; charset=utf-8')
+            self._set_security_headers()
             self.end_headers()
             with open('src/style.css', 'rb') as f:
                 self.wfile.write(f.read())
@@ -35,6 +46,7 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == '/script.js':
             self.send_response(200)
             self.send_header('Content-type', 'application/javascript; charset=utf-8')
+            self._set_security_headers()
             self.end_headers()
             with open('src/script.js', 'rb') as f:
                 self.wfile.write(f.read())
@@ -76,6 +88,7 @@ class Handler(BaseHTTPRequestHandler):
             response = requests.post("https://spoo.me/", data=payload, headers=headers, timeout=10)
             self.send_response(response.status_code)
             self.send_header('Content-type', 'application/json; charset=utf-8')
+            self._set_security_headers()
             self.end_headers()
             self.wfile.write(response.content)
         except requests.RequestException:
