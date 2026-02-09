@@ -10,6 +10,7 @@ import requests
 class Handler(BaseHTTPRequestHandler):
     def _set_security_headers(self):
         self.send_header('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https://api.shrtco.de;")
+        # self.send_header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
         self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('X-Frame-Options', 'DENY')
         self.send_header('X-XSS-Protection', '1; mode=block')
